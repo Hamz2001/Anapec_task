@@ -1,0 +1,39 @@
+networks:
+  my_network1:
+    name: my-network1
+    driver: bridge
+  
+services:
+  db1:
+    image: mysql:latest
+    container_name: dbone
+    networks:
+      - my_network1
+    # env_file:
+    #   - .env
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=hrakik
+      - MYSQL_USER=hr
+      - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=root1234
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  
+  # anapec:
+  #   build: ./anapec
+  #   image: anapec
+  #   container_name: php
+  #   restart: always
+  #   volumes:
+  #     - ./anapec:/var/www/html
+  #   networks:
+  #     - my_network1
+  #   ports:
+  #     - "8070:8070"
+  #     # - "9000:9000"
+  #     # - "5173:5173"
+  #   depends_on:
+  #     - db1
